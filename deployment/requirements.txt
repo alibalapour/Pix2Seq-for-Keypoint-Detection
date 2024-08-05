@@ -1,0 +1,13 @@
+fastapi[all]
+timm
+opencv-python
+transformers
+python-box
+matplotlib
+numpy
+albumentations
+
+--extra-index-url https://download.pytorch.org/whl/cu116
+torch
+torchvision
+torchaudio

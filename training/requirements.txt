@@ -1,0 +1,15 @@
+PyYAML
+tqdm
+python-box
+
+--extra-index-url https://download.pytorch.org/whl/cu113
+torch
+torchvision
+torchaudio
+
+torch-optimizer
+adabelief-pytorch
+matplotlib
+git+https://github.com/katsura-jp/pytorch-cosine-annealing-with-warmup
+
+--pre timm

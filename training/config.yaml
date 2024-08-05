@@ -1,0 +1,74 @@
+fix_seed: 0
+checkpoints_every: 16
+tensorboard_log: True
+result_path: ./results
+architecture: pix2seq
+import_data_format: csv
+evaluate: False   # if you want to evaluate a model, set the model's path and make evaluate true
+
+resume:
+  resume: False
+  resume_path: results/2023-02-21__05-11-04/checkpoints/checkpoint_16.pth
+  restart_optimizer: False
+
+pix2seq_model:
+  encoder:
+    model_type: transformer # transformer or cnn
+    model_name: deit3_small_patch16_384_in21ft1k   # deit3_small_patch16_384_in21ft1k, eva_giant_patch14_560.m30m_ft_in22k_in1k, maxvit_xlarge_tf_512.in21k_ft_in1k, convnextv2_huge.fcmae_ft_in22k_in1k_512
+    img_size: 384
+    patch_size: 16
+  decoder:
+    num_patches: 576
+    dimension: 128
+    dim_feedforward: 3072
+    num_heads: 8
+    num_layers: 6
+    max_len: 300
+    pretrained:
+      pretrained: False
+      pretrained_path: ../pre-trained decoder/2/decoder.pth
+  generation_steps: 101
+
+train_settings:
+  image_path: ../../dataset/main dataset/train/V4.3.0/images
+  annotation_path: ../../dataset/main dataset/train/V4.3.0/annotations.csv
+  num_epochs: 16
+  shuffle: True
+  img_size: 384
+  num_bins: 384
+  mixed_precision: True
+  sam: False
+  gsam: False
+  device: cuda
+  batch_size: 16
+  num_workers: 6
+  accum_iter: 8
+  merge_points: True
+  merge_points_threshold: 0.018
+
+valid_settings:
+  image_path: ../../dataset/main dataset/valid/V2.1/images
+  annotation_path: ../../dataset/main dataset/valid/V2.1/annotations.csv
+  do_every: 2
+  batch_size: 4
+  device: cuda
+  num_workers: 0
+  merge_points: True
+  merge_points_threshold: 0.018
+
+optimizer:
+  name: adabelief
+  lr: 3e-4
+  weight_decouple: True
+  weight_decay: 1e-5
+  eps: 1e-16
+  grad_clip_norm: 1
+  decay:
+    warmup: 1024
+    min_lr: 5e-7
+    gamma: 0.2
+    num_restarts: 1
+
+augmentation:
+  imagenet_normalize: True
+  horizontal_flip: True
